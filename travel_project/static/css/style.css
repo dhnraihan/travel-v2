@@ -1,0 +1,94 @@
+/* Custom styles */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.card {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.destination-image {
+    height: 200px;
+    object-fit: cover;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.footer {
+    margin-top: auto;
+    padding: 2rem 0;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 0.5rem 1.5rem;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Star rating styles */
+.star-rating {
+    color: #ffc107;
+}
+
+/* Price tag style */
+.price-tag {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* Location badge */
+.location-badge {
+    background-color: #f8f9fa;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+}
+
+/* Review section */
+.review-card {
+    border-left: 4px solid #007bff;
+}
+
+/* Booking form */
+.booking-form {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+}
+
+/* Profile section */
+.profile-header {
+    background-color: #f8f9fa;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+
+/* Responsive images */
+.img-fluid {
+    border-radius: 0.5rem;
+}

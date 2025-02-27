@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Travel Blog</h1>
+        {% if user.is_authenticated %}
+        <a href="{% url 'blog-create' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Write New Post
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for post in posts %}
+        <article class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+            <img class="h-48 w-full object-cover" src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+            <div class="p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-2">
+                    <a href="{% url 'blog-detail' post.slug %}" class="hover:text-indigo-600">{{ post.title }}</a>
+                </h2>
+                <div class="flex items-center text-sm text-gray-500 mb-4">
+                    <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    {{ post.created_at|date:"F d, Y" }}
+                    <span class="mx-2">•</span>
+                    <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    {{ post.author.username }}
+                </div>
+                <p class="text-gray-600 mb-4">{{ post.content|truncatewords:30 }}</p>
+                <a href="{% url 'blog-detail' post.slug %}" class="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                    Read more
+                    <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </article>
+        {% empty %}
+        <div class="col-span-full text-center py-12">
+            <p class="text-gray-500">No blog posts yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+    <nav class="flex justify-center mt-8">
+        <ul class="flex space-x-2">
+            {% if page_obj.has_previous %}
+            <li>
+                <a href="?page=1" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200">First</a>
+            </li>
+            <li>
+                <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200">Previous</a>
+            </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li>
+                    <span class="px-3 py-2 rounded-md text-sm font-medium text-white bg-indigo-600">{{ num }}</span>
+                </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li>
+                    <a href="?page={{ num }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200">{{ num }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li>
+                <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200">Next</a>
+            </li>
+            <li>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200">Last</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}
