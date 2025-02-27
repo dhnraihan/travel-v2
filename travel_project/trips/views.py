@@ -6,12 +6,16 @@ from django.contrib import messages
 from .models import Destination, Booking, Review, BlogPost, Comment
 from .forms import BookingForm, ReviewForm, BlogPostForm, CommentForm
 
+
+
 class HomeView(ListView):
     model = Destination
     template_name = 'trips/home.html'
     context_object_name = 'destinations'
     ordering = ['-created_at']
     paginate_by = 6
+
+
 
 class DestinationDetailView(DetailView):
     model = Destination
@@ -23,6 +27,8 @@ class DestinationDetailView(DetailView):
         context['booking_form'] = BookingForm()
         context['review_form'] = ReviewForm()
         return context
+
+
 
 @login_required
 def book_destination(request, pk):
@@ -39,6 +45,8 @@ def book_destination(request, pk):
             return redirect('destination-detail', pk=pk)
     return redirect('destination-detail', pk=pk)
 
+
+
 @login_required
 def add_review(request, pk):
     destination = get_object_or_404(Destination, pk=pk)
@@ -52,6 +60,8 @@ def add_review(request, pk):
             messages.success(request, 'Your review has been added!')
     return redirect('destination-detail', pk=pk)
 
+
+
 class UserBookingsView(LoginRequiredMixin, ListView):
     model = Booking
     template_name = 'trips/user_bookings.html'
@@ -60,6 +70,8 @@ class UserBookingsView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Booking.objects.filter(user=self.request.user).order_by('-booking_date')
+
+
 
 class BlogListView(ListView):
     model = BlogPost
@@ -71,6 +83,7 @@ class BlogListView(ListView):
     def get_queryset(self):
         return BlogPost.objects.filter(status='published')
 
+
 class BlogDetailView(DetailView):
     model = BlogPost
     template_name = 'trips/blog_detail.html'
@@ -81,6 +94,8 @@ class BlogDetailView(DetailView):
         context['comment_form'] = CommentForm()
         return context
 
+
+
 class BlogCreateView(LoginRequiredMixin, CreateView):
     model = BlogPost
     form_class = BlogPostForm
@@ -89,6 +104,8 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+
 
 class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = BlogPost
@@ -103,6 +120,8 @@ class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         post = self.get_object()
         return self.request.user == post.author
 
+
+
 class BlogDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = BlogPost
     template_name = 'trips/blog_confirm_delete.html'
@@ -111,6 +130,7 @@ class BlogDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
+
 
 @login_required
 def add_comment(request, slug):
@@ -125,3 +145,13 @@ def add_comment(request, slug):
             messages.success(request, 'Your comment has been added!')
             return redirect('blog-detail', slug=slug)
     return redirect('blog-detail', slug=slug)
+
+
+class DestinationCreateView(LoginRequiredMixin, CreateView):
+    model = Destination
+    fields = ['name', 'description', 'location', 'image', 'price']
+    template_name = 'trips/destination_form.html'
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Destination has been created successfully!')
+        return super().form_valid(form)
