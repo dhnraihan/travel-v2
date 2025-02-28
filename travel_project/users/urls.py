@@ -1,10 +1,10 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
-from . import views
+from .views import *
 
 urlpatterns = [
-    path('register/', views.register, name='register'),
-    path('profile/', views.profile, name='profile'),
-    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
+    path('register/', register, name='register'),
+    path('login/', user_login, name='login'),
+    # path('logout/', user_logout, name='logged-out'),
+    path('profile/', profile, name='profile'),
+    path('logged-out/', logged_out_view, name='logout'),  # 🔹 New URL for Logged Out Page
 ]

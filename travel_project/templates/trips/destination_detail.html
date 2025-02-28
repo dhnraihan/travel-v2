@@ -1,65 +1,68 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 
 {% block title %}{{ destination.name }}{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-8">
-        <img src="{{ destination.image.url }}" class="img-fluid rounded" alt="{{ destination.name }}">
-        <h1 class="mt-4">{{ destination.name }}</h1>
-        <p class="text-muted">
-            <i class="fas fa-map-marker-alt"></i> {{ destination.location }}
-        </p>
-        <p>{{ destination.description }}</p>
-        <h3>Price: ৳{{ destination.price }}</h3>
-    </div>
-    
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Book This Trip</h5>
-                <form method="POST" action="{% url 'book-destination' destination.pk %}">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Left Side: Destination Details -->
+        <div class="md:col-span-2">
+            <img src="{{ destination.image.url }}" class="w-full h-96 object-cover rounded-lg shadow-md" alt="{{ destination.name }}">
+            <h1 class="mt-4 text-3xl font-bold text-gray-900">{{ destination.name }}</h1>
+            <p class="text-gray-600 flex items-center mt-2">
+                <svg class="w-5 h-5 text-red-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 3a6 6 0 00-6 6c0 5 6 9 6 9s6-4 6-9a6 6 0 00-6-6zm0 8a2 2 0 110-4 2 2 0 010 4z" clip-rule="evenodd"></path>
+                </svg>
+                {{ destination.location }}
+            </p>
+            <p class="mt-4 text-gray-700">{{ destination.description }}</p>
+            <h3 class="mt-4 text-xl font-semibold text-indigo-600">Price: ৳{{ destination.price }}</h3>
+        </div>
+
+        <!-- Right Side: Booking & Review Forms -->
+        <div class="space-y-6">
+            <!-- Booking Form -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h5 class="text-lg font-semibold mb-4">Book This Trip</h5>
+                <form method="POST" action="{% url 'book-destination' destination.pk %}" class="space-y-4">
                     {% csrf_token %}
-                    {{ booking_form|crispy }}
-                    <button type="submit" class="btn btn-primary w-100">Book Now</button>
+                    {{ booking_form }}
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">Book Now</button>
+                </form>
+            </div>
+
+            <!-- Review Form -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h5 class="text-lg font-semibold mb-4">Write a Review</h5>
+                <form method="POST" action="{% url 'add-review' destination.pk %}" class="space-y-4">
+                    {% csrf_token %}
+                    {{ review_form }}
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">Submit Review</button>
                 </form>
             </div>
         </div>
-
-        <div class="card mt-4">
-            <div class="card-body">
-                <h5 class="card-title">Write a Review</h5>
-                <form method="POST" action="{% url 'add-review' destination.pk %}">
-                    {% csrf_token %}
-                    {{ review_form|crispy }}
-                    <button type="submit" class="btn btn-success w-100">Submit Review</button>
-                </form>
-            </div>
-        </div>
     </div>
-</div>
 
-<div class="row mt-5">
-    <div class="col-12">
-        <h3>Reviews</h3>
+    <!-- Reviews Section -->
+    <div class="mt-10">
+        <h3 class="text-2xl font-bold text-gray-900">Reviews</h3>
         {% for review in reviews %}
-        <div class="card mb-3">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <h6 class="card-subtitle mb-2 text-muted">{{ review.user.username }}</h6>
-                    <div>
-                        {% for i in review.rating|ljust:review.rating %}
-                        <i class="fas fa-star text-warning"></i>
-                        {% endfor %}
-                    </div>
+        <div class="bg-white shadow-md rounded-lg p-5 mt-4">
+            <div class="flex justify-between items-center">
+                <h6 class="text-gray-700 font-semibold">{{ review.user.username }}</h6>
+                <div class="flex">
+                    {% for i in review.rating|ljust:review.rating %}
+                    <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 15l-5.878 3.09 1.122-6.545L1 7.227l6.561-.954L10 1l2.439 5.273L19 7.227l-4.244 4.318 1.122 6.545L10 15z"></path>
+                    </svg>
+                    {% endfor %}
                 </div>
-                <p class="card-text">{{ review.comment }}</p>
-                <small class="text-muted">{{ review.created_at|date:"F d, Y" }}</small>
             </div>
+            <p class="mt-2 text-gray-600">{{ review.comment }}</p>
+            <small class="text-gray-400">{{ review.created_at|date:"F d, Y" }}</small>
         </div>
         {% empty %}
-        <p>No reviews yet. Be the first to review!</p>
+        <p class="text-gray-500 mt-3">No reviews yet. Be the first to review!</p>
         {% endfor %}
     </div>
 </div>

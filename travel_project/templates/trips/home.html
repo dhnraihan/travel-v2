@@ -3,75 +3,85 @@
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-    <div class="row">
-        <div class="col-12">
-            <h1 class="mb-4">Popular Destinations</h1>
-        </div>
+    
+    <div class="text-center">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6">Popular Destinations</h1>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 ">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for destination in destinations %}
-        <div class="col">
-            <div class="card h-100">
-                <img src="{{ destination.image.url }}" class="card-img-top" alt="{{ destination.name }}" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ destination.name }}</h5>
-                    <p class="card-text">{{ destination.description|truncatewords:30 }}</p>
-                    <p class="card-text">
-                        <small class="text-muted">
-                            <i class="fas fa-map-marker-alt"></i> {{ destination.location }}
-                        </small>
-                    </p>
-                    <p class="card-text">
-                        <strong>৳{{ destination.price }}</strong>
-                    </p>
-                    <a href="{% url 'destination-detail' destination.pk %}" class="btn btn-primary">View Details</a>
-                </div>
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <img src="{{ destination.image.url }}" alt="{{ destination.name }}" class="w-full h-48 object-cover">
+            <div class="p-5">
+                <h5 class="text-lg font-semibold text-gray-800">{{ destination.name }}</h5>
+                <p class="text-gray-600 text-sm mt-2">{{ destination.description|truncatewords:30 }}</p>
+                <p class="text-gray-500 text-sm flex items-center mt-2">
+                    <svg class="w-4 h-4 text-red-500 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a6 6 0 00-6 6c0 4.418 6 10 6 10s6-5.582 6-10a6 6 0 00-6-6zM7.293 9.293a1 1 0 011.414 0L10 10.586l1.293-1.293a1 1 0 111.414 1.414l-2 2a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    {{ destination.location }}
+                </p>
+                <p class="text-lg font-bold text-gray-900 mt-2">৳{{ destination.price }}</p>
+                <a href="{% url 'destination-detail' destination.pk %}" class="mt-4 inline-block bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition">View Details</a>
             </div>
         </div>
         {% empty %}
-        <div class="col-12">
-            <p>No destinations available.</p>
+        <div class="col-span-3 text-center">
+            <p class="text-gray-500">No destinations available.</p>
         </div>
         {% endfor %}
     </div>
 
     {% if is_paginated %}
-    <nav class="mt-4">
-        <ul class="pagination justify-content-center">
+    <nav class="mt-6 flex justify-center">
+        <ul class="inline-flex items-center space-x-2">
             {% if page_obj.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page=1">First</a>
+            <li>
+                <a href="?page=1"
+                    class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100">
+                    First
+                </a>
             </li>
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            <li>
+                <a href="?page={{ page_obj.previous_page_number }}"
+                    class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100">
+                    Previous
+                </a>
             </li>
             {% endif %}
 
             {% for num in page_obj.paginator.page_range %}
             {% if page_obj.number == num %}
-            <li class="page-item active">
-                <span class="page-link">{{ num }}</span>
+            <li>
+                <span class="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md">
+                    {{ num }}
+                </span>
             </li>
             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            <li>
+                <a href="?page={{ num }}"
+                    class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100">
+                    {{ num }}
+                </a>
             </li>
             {% endif %}
             {% endfor %}
 
             {% if page_obj.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <li>
+                <a href="?page={{ page_obj.next_page_number }}"
+                    class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100">
+                    Next
+                </a>
             </li>
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            <li>
+                <a href="?page={{ page_obj.paginator.num_pages }}"
+                    class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100">
+                    Last
+                </a>
             </li>
             {% endif %}
         </ul>
     </nav>
+    {% endif %}
 
 </div>
-{% endif %}
 {% endblock %}

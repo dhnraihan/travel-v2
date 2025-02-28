@@ -29,6 +29,7 @@ class Booking(models.Model):
     def __str__(self):
         return f"{self.user.username}'s booking for {self.destination.name}"
 
+
 class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
@@ -38,6 +39,7 @@ class Review(models.Model):
     
     def __str__(self):
         return f"{self.user.username}'s review of {self.destination.name}"
+
 
 class BlogPost(models.Model):
     title = models.CharField(max_length=200)

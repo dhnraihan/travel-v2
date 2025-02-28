@@ -10,6 +10,7 @@ class BookingForm(forms.ModelForm):
             'end_date': forms.DateInput(attrs={'type': 'date'}),
         }
 
+
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
@@ -18,6 +19,8 @@ class ReviewForm(forms.ModelForm):
             'comment': forms.Textarea(attrs={'rows': 4}),
         }
 
+
+
 class BlogPostForm(forms.ModelForm):
     class Meta:
         model = BlogPost
@@ -25,6 +28,8 @@ class BlogPostForm(forms.ModelForm):
         widgets = {
             'content': forms.Textarea(attrs={'rows': 8}),
         }
+
+
 
 class CommentForm(forms.ModelForm):
     class Meta:

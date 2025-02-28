@@ -2,66 +2,78 @@
 {% block title %}My Bookings{% endblock %}
 
 {% block content %}
-<h1>My Bookings</h1>
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <h1 class="text-3xl font-bold text-gray-900 mb-6 text-center">My Bookings</h1>
 
-<div class="row">
-    {% for booking in bookings %}
-    <div class="col-md-6 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">{{ booking.destination.name }}</h5>
-                <p class="card-text">
-                    <strong>Location:</strong> {{ booking.destination.location }}<br>
-                    <strong>Start Date:</strong> {{ booking.start_date|date:"F d, Y" }}<br>
-                    <strong>End Date:</strong> {{ booking.end_date|date:"F d, Y" }}<br>
-                    <strong>Number of People:</strong> {{ booking.number_of_people }}<br>
-                    <strong>Total Price:</strong> ৳{{ booking.total_price }}
-                </p>
-                <small class="text-muted">Booked on {{ booking.booking_date|date:"F d, Y" }}</small>
-            </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {% for booking in bookings %}
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden p-5">
+            <h5 class="text-lg font-semibold text-gray-800">{{ booking.destination.name }}</h5>
+            <p class="text-gray-600 text-sm mt-2">
+                <strong>Location:</strong> {{ booking.destination.location }}<br>
+                <strong>Start Date:</strong> {{ booking.start_date|date:"F d, Y" }}<br>
+                <strong>End Date:</strong> {{ booking.end_date|date:"F d, Y" }}<br>
+                <strong>Number of People:</strong> {{ booking.number_of_people }}<br>
+                <strong>Total Price:</strong> <span class="text-green-600 font-semibold">৳{{ booking.total_price }}</span>
+            </p>
+            <small class="text-gray-500">Booked on {{ booking.booking_date|date:"F d, Y" }}</small>
         </div>
-    </div>
-    {% empty %}
-    <div class="col-12">
-        <p>You haven't made any bookings yet.</p>
-        <a href="{% url 'home' %}" class="btn btn-primary">Browse Destinations</a>
-    </div>
-    {% endfor %}
-</div>
-
-{% if is_paginated %}
-<nav class="mt-4">
-    <ul class="pagination justify-content-center">
-        {% if page_obj.has_previous %}
-        <li class="page-item">
-            <a class="page-link" href="?page=1">First</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-        </li>
-        {% endif %}
-
-        {% for num in page_obj.paginator.page_range %}
-        {% if page_obj.number == num %}
-        <li class="page-item active">
-            <span class="page-link">{{ num }}</span>
-        </li>
-        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-        <li class="page-item">
-            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-        </li>
-        {% endif %}
+        {% empty %}
+        <div class="col-span-2 text-center">
+            <p class="text-gray-500">You haven't made any bookings yet.</p>
+            <a href="{% url 'home' %}" class="mt-4 inline-block bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition">Browse Destinations</a>
+        </div>
         {% endfor %}
+    </div>
 
-        {% if page_obj.has_next %}
-        <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-        </li>
-        {% endif %}
-    </ul>
-</nav>
-{% endif %}
+    {% if is_paginated %}
+    <nav class="mt-6 flex justify-center">
+        <ul class="inline-flex items-center space-x-2">
+            {% if page_obj.has_previous %}
+            <li>
+                <a href="?page=1" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100">
+                    First
+                </a>
+            </li>
+            <li>
+                <a href="?page={{ page_obj.previous_page_number }}" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100">
+                    Previous
+                </a>
+            </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            <li>
+                <span class="px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md">
+                    {{ num }}
+                </span>
+            </li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <li>
+                <a href="?page={{ num }}" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100">
+                    {{ num }}
+                </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li>
+                <a href="?page={{ page_obj.next_page_number }}" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100">
+                    Next
+                </a>
+            </li>
+            <li>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100">
+                    Last
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+</div>
 {% endblock %}
