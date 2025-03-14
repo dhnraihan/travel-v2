@@ -70,7 +70,7 @@ Travel Project is a **Django-based** web application designed to simplify planni
 ### Home Page
 ![Home Page](travel_project/static/img/screenshot1.webp)
 
-### Booking Page
+### Bloging Page
 ![Bloging Page](travel_project/static/img/screenshot2.webp)
 
 ### Itinerary Page
