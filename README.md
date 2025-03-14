@@ -68,13 +68,13 @@ Travel Project is a **Django-based** web application designed to simplify planni
 ## Screenshots 📸
 
 ### Home Page
-![Home Page](travel_project/static/img/screenshot1.png)
+![Home Page](travel_project/static/img/screenshot1.webp)
 
 ### Booking Page
-![Bloging Page](travel_project/static/img/screenshot2.png)
+![Bloging Page](travel_project/static/img/screenshot2.webp)
 
 ### Itinerary Page
-![Itinerary Page](travel_project/static/img/screenshot3.png)
+![Itinerary Page](travel_project/static/img/screenshot3.webp)
 
 ---
 
