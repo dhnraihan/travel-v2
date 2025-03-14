@@ -41,14 +41,16 @@ def user_login(request):
 
 
 # # 🔹 Logout View (Redirect to Logged Out Page)
-# def user_logout(request):
-#     logout(request)
-#     messages.success(request, 'You have successfully logged out.')
-#     return redirect('logged-out')
+@login_required
+def user_logout(request):
+    logout(request)
+    messages.success(request, 'You have successfully logged out.')
+    # return redirect('logged-out')
+    return render(request, 'users/logout.html')
 
 # 🔹 Logged Out Page View
-def logged_out_view(request):
-    return render(request, 'users/logout.html')
+# def logged_out_view(request):
+#     return render(request, 'users/logout.html')
 
 # 🔹 User Profile View (Requires Login)
 @login_required
