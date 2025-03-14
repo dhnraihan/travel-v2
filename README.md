@@ -65,6 +65,19 @@ Travel Project is a **Django-based** web application designed to simplify planni
    The application will be available at **[http://127.0.0.1:8000](http://127.0.0.1:8000)**. 🌐
 
 ---
+## Screenshots 📸
+
+### Home Page
+![Home Page](static/img/screenshot1.png)
+
+### Booking Page
+![Bloging Page](static/img/screenshot2.png)
+
+### Itinerary Page
+![Itinerary Page](static/img/screenshot3.png)
+
+---
+
 
 ## 🤝 Contributing
 
